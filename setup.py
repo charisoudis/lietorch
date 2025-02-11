@@ -3,7 +3,6 @@ from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 
 import os.path as osp
 
-
 ROOT = osp.dirname(osp.abspath(__file__))
 
 setup(
@@ -21,18 +20,8 @@ setup(
                 'lietorch/src/lietorch.cpp', 
                 'lietorch/src/lietorch_gpu.cu',
                 'lietorch/src/lietorch_cpu.cpp'],
-            extra_compile_args={
-                'cxx': ['-O2'], 
-                'nvcc': ['-O2',
-                    '-gencode=arch=compute_60,code=sm_60', 
-                    '-gencode=arch=compute_61,code=sm_61', 
-                    '-gencode=arch=compute_70,code=sm_70', 
-                    '-gencode=arch=compute_75,code=sm_75',
-                    '-gencode=arch=compute_75,code=compute_75',
-                    
-                ]
-            }),
-
+            extra_cflags=['-O2'],
+        ),
         CUDAExtension('lietorch_extras', 
             sources=[
                 'lietorch/extras/altcorr_kernel.cu',
@@ -42,19 +31,12 @@ setup(
                 'lietorch/extras/se3_solver.cu',
                 'lietorch/extras/extras.cpp',
             ],
-            extra_compile_args={
-                'cxx': ['-O2'], 
-                'nvcc': ['-O2',
-                    '-gencode=arch=compute_60,code=sm_60', 
-                    '-gencode=arch=compute_61,code=sm_61', 
-                    '-gencode=arch=compute_70,code=sm_70', 
-                    '-gencode=arch=compute_75,code=sm_75',
-                    '-gencode=arch=compute_75,code=compute_75',
-                    
-                ]
-            }),
+            extra_cflags=['-O2'],
+        ),
     ],
-    cmdclass={ 'build_ext': BuildExtension }
+    cmdclass={
+        'build_ext': BuildExtension
+    }
 )
 
 
