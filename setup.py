@@ -3,10 +3,6 @@ from setuptools import setup
 from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 import os.path as osp
 
-# Set CUDA_HOME only if it's not already set (useful for Docker where this might be preset)
-if 'CUDA_HOME' not in os.environ:
-    os.environ['CUDA_HOME'] = '/usr/local/cuda'
-
 ROOT = osp.dirname(osp.abspath(__file__))
 
 setup(
@@ -20,7 +16,7 @@ setup(
             'lietorch_backends',
             include_dirs=[
                 osp.join(ROOT, 'lietorch/include'),
-                osp.join(ROOT, 'eigen'),
+                '/usr/include/eigen3/',
             ],
             sources=[
                 'lietorch/src/lietorch.cpp',
